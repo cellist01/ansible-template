@@ -1,0 +1,4 @@
+[rhel-7-server-rpms]
+name=rhel-7-server-rpms
+baseurl=http://10.50.3.38/rhel-7-server-rpms
+gpgcheck=0

@@ -1,0 +1,65 @@
+---
+- name: -1001- Copy index.html
+  copy:
+    src: index.html
+    dest: /var/www/html/index.html
+    owner: root
+    group: root
+  notify: -3001- restart httpd service
+
+- name: -1002- Copy Dog image
+  copy:
+    src: dog.jfif
+    dest: /var/www/html/dog.jfif
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: -1003- verify 80 port in config file
+  command: grep '^Listen ' /etc/httpd/conf/httpd.conf
+  register: HTTP_PORT
+
+- name: -1004- debug HTTP_PORT
+  debug:
+    msg: "{{ HTTP_PORT.stdout }}"
+#  notify: Change port
+#  when: "'Listen 80' in HTTP_PORT.stdout"
+
+- name: -1005- Change port 8080
+  lineinfile:
+    path: /etc/httpd/conf/httpd.conf
+    regexp: '^Listen '
+    insertafter: '^#Listen '
+    line: Listen 0.0.0.0:8080
+  notify:
+    - -3001- restart httpd service
+  when: "'Listen 80' in HTTP_PORT.stdout"
+
+- name: -1007- restart httpd service
+  service:
+    name: httpd
+    state: restarted
+
+- name: -1008- Add host ip
+  lineinfile:
+    path: /etc/hosts
+    line: "{{ item }}"
+    state: present
+  with_items: "{{ host_list }}"
+
+- name: -1009- check Listen port 8080
+  shell: netstat  -tnl | grep 8080 | awk '{print $4}'
+  register: HTTP8080
+
+- name: -1008D- debug HTTP8080
+  debug:
+    msg: "{{ HTTP8080.stdout }}"
+
+- name: -1010- Check Openstack instance IP
+  shell: cat /etc/hosts | grep {{ ansible_nodename }}| awk '{print $1}'
+  register: ManagedHost
+  when: "'0.0.0.0:8080' in HTTP8080.stdout"
+
+- name: -1011- Check URL
+  debug:
+    msg: Web Page is http://{{ ManagedHost.stdout}}:8080

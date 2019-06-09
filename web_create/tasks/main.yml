@@ -1,0 +1,4 @@
+# tasks file for hwcho_roles
+- include_tasks: repo_copy.yml
+- include_tasks: install_http.yml
+- include_tasks: index_copy.yml

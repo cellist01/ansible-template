@@ -1,0 +1,9 @@
+# Copy Repository File
+- name: -0001- Copy Repo File
+  copy:
+#    src: files/rhelbase.repo
+    src: rhelbase.repo
+    dest:  /etc/yum.repos.d/rhel.repo
+    owner: root
+    group: root
+    mode: '0644'

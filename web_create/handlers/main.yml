@@ -1,0 +1,14 @@
+---
+# handlers file for hwcho_roles
+- name: -3001- restart httpd service
+  service:
+    name: httpd
+    state: restarted
+
+#- name: Change port
+#  lineinfile:
+#    path: /etc/httpd/conf/httpd.conf
+#    regexp: '^Listen '
+#    insertafter: '^#Listen '
+#    line: Listen 8080
+#  when: "'Listen 80' in HTTP_PORT.stdout"

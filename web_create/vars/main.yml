@@ -1,0 +1,9 @@
+host_list:
+  - "## Openstack instance ( RHEL7 )"
+  - 10.50.3.172 managed-rhel7-4
+  - 10.50.3.171 managed-rhel7-3
+  - 10.50.3.174 managed-rhel7-2
+  - 10.50.3.176 managed-rhel7-1
+  - "## Openstack instance ( Windows2012R2 )"
+  - 10.50.3.192 managed-windows2012r2-1
+  - 10.50.3.185 managed-windows2012r2-2
